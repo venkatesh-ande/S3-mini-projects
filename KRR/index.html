@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case-Based Reasoning System | KRR</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="brand"><span class="brand-mark">KRR</span><span>CBR Technical Support</span></div>
+      <button class="menu-btn" aria-label="Open menu">☰</button>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#cbr">CBR</a>
+        <a href="#cycle">CBR Cycle</a>
+        <a href="#demo">Demo</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#applications">Applications</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">KNOWLEDGE REPRESENTATION & REASONING</span>
+          <h1>Case-Based Reasoning System for <span>Technical Support</span></h1>
+          <p class="lead">A knowledge-driven support system that solves new technical problems by finding, adapting, and learning from solutions to similar problems solved in the past.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#demo">Try the CBR Demo →</a>
+            <a class="btn secondary" href="#cbr">Explore the Concept</a>
+          </div>
+          <div class="stats">
+            <div><strong>4</strong><span>CBR stages</span></div>
+            <div><strong>8</strong><span>sample cases</span></div>
+            <div><strong>1</strong><span>interactive engine</span></div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="terminal-top"><i></i><i></i><i></i><span>cbr_engine</span></div>
+          <div class="terminal-body">
+            <p><span class="code-key">Problem:</span> Wi-Fi not connecting</p>
+            <p><span class="code-key">Retrieve:</span> Case #104 — 92% match</p>
+            <p><span class="code-key">Reuse:</span> Apply previous solution</p>
+            <p><span class="code-key">Revise:</span> Verify network adapter</p>
+            <p><span class="code-key">Retain:</span> Save successful solution</p>
+            <div class="terminal-result">✓ Recommended solution generated</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cbr" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">01 · CONCEPT</span>
+          <h2>What is Case-Based Reasoning?</h2>
+          <p>CBR is an AI reasoning approach that uses previous experiences, called cases, to solve new problems.</p>
+        </div>
+        <div class="info-grid">
+          <article class="card feature"><div class="icon">🧠</div><h3>Experience as Knowledge</h3><p>Past support incidents are stored as structured cases containing symptoms, causes, actions, and outcomes.</p></article>
+          <article class="card feature"><div class="icon">🔎</div><h3>Similarity-Based Search</h3><p>The system compares a new problem with stored cases and identifies the most relevant previous experiences.</p></article>
+          <article class="card feature"><div class="icon">♻️</div><h3>Continuous Learning</h3><p>When a solution works, the new experience can be retained and reused for future support requests.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cycle" class="section dark-section">
+      <div class="container">
+        <div class="section-heading light">
+          <span class="eyebrow">02 · REASONING PROCESS</span>
+          <h2>The CBR Cycle</h2>
+          <p>The classic CBR process follows four connected stages.</p>
+        </div>
+        <div class="cycle">
+          <div class="cycle-line"></div>
+          <article class="cycle-card"><span>01</span><div class="cycle-icon">🔍</div><h3>Retrieve</h3><p>Find the most similar case from the case library.</p></article>
+          <article class="cycle-card"><span>02</span><div class="cycle-icon">🧩</div><h3>Reuse</h3><p>Adapt the previous solution to the current problem.</p></article>
+          <article class="cycle-card"><span>03</span><div class="cycle-icon">✓</div><h3>Revise</h3><p>Test the solution and correct it if necessary.</p></article>
+          <article class="cycle-card"><span>04</span><div class="cycle-icon">💾</div><h3>Retain</h3><p>Store the successful experience for future cases.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo" class="section demo-section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">03 · INTERACTIVE DEMO</span>
+          <h2>Technical Support CBR Engine</h2>
+          <p>Describe a technical problem. The demo compares it with stored cases and returns the closest match.</p>
+        </div>
+        <div class="demo-layout">
+          <div class="card input-card">
+            <label for="problem">Describe your technical problem</label>
+            <textarea id="problem" placeholder="Example: My laptop connects to Wi-Fi but there is no internet..."></textarea>
+            <div class="quick-tags">
+              <button data-problem="My computer is not connecting to Wi-Fi">Wi-Fi issue</button>
+              <button data-problem="My laptop is running very slowly">Slow computer</button>
+              <button data-problem="The printer is not printing">Printer issue</button>
+              <button data-problem="My computer is overheating">Overheating</button>
+            </div>
+            <button id="solveBtn" class="btn primary full">Find Similar Case</button>
+          </div>
+          <div class="card result-card" id="result">
+            <div class="empty-state">
+              <div class="big-icon">🤖</div>
+              <h3>Waiting for a problem</h3>
+              <p>Enter a problem to activate the case retrieval engine.</p>
+            </div>
+          </div>
+        </div>
+        <div class="case-library">
+          <h3>Case Library <span id="caseCount"></span></h3>
+          <div id="cases" class="case-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">04 · SYSTEM DESIGN</span>
+          <h2>System Architecture</h2>
+          <p>The knowledge base and reasoning engine work together to turn past support experiences into new solutions.</p>
+        </div>
+        <div class="architecture">
+          <div class="arch-box user-box">👤<strong>User</strong><small>Reports problem</small></div>
+          <div class="arrow">→</div>
+          <div class="arch-box">📝<strong>Problem Input</strong><small>Symptoms & keywords</small></div>
+          <div class="arrow">→</div>
+          <div class="arch-box highlight">🧠<strong>CBR Engine</strong><small>Similarity + adaptation</small></div>
+          <div class="arrow">→</div>
+          <div class="arch-box">📚<strong>Case Base</strong><small>Past experiences</small></div>
+          <div class="arrow">→</div>
+          <div class="arch-box">💡<strong>Solution</strong><small>Recommended action</small></div>
+        </div>
+        <div class="knowledge-table">
+          <h3>Knowledge Representation of a Case</h3>
+          <table>
+            <thead><tr><th>Attribute</th><th>Example Value</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>Case ID</td><td>TS-104</td><td>Unique identifier</td></tr>
+              <tr><td>Problem</td><td>Wi-Fi not connecting</td><td>Problem description</td></tr>
+              <tr><td>Symptoms</td><td>Network unavailable</td><td>Observable evidence</td></tr>
+              <tr><td>Cause</td><td>Disabled adapter</td><td>Known root cause</td></tr>
+              <tr><td>Solution</td><td>Enable adapter & restart</td><td>Recommended action</td></tr>
+              <tr><td>Outcome</td><td>Resolved</td><td>Learning feedback</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="applications" class="section applications">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">05 · USE CASES</span>
+          <h2>Applications in Technical Support</h2>
+        </div>
+        <div class="app-grid">
+          <div class="app-card"><span>💻</span><h3>IT Help Desks</h3><p>Reuse solutions for recurring hardware and software incidents.</p></div>
+          <div class="app-card"><span>🌐</span><h3>Network Support</h3><p>Compare connection symptoms with previously resolved network cases.</p></div>
+          <div class="app-card"><span>🖨️</span><h3>Device Troubleshooting</h3><p>Support printers, scanners, laptops, and other devices using past cases.</p></div>
+          <div class="app-card"><span>🏢</span><h3>Enterprise Support</h3><p>Capture organizational troubleshooting knowledge in a reusable form.</p></div>
+        </div>
+        <div class="pros-cons">
+          <div><h3>Advantages</h3><ul><li>Uses real previous experiences</li><li>Easy to explain and understand</li><li>Improves as cases accumulate</li><li>Useful for recurring problems</li></ul></div>
+          <div><h3>Limitations</h3><ul><li>Needs a good case library</li><li>Similarity measures affect results</li><li>Old cases may become outdated</li><li>New problems may have no close match</li></ul></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <div><strong>Case-Based Reasoning System</strong><p>KRR Mini Project · Technical Support</p></div>
+      <div class="footer-note">Knowledge → Experience → Reasoning → Solution</div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

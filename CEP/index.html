@@ -1,0 +1,117 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111a15">
+  <title>Campus Circle — Lost &amp; Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="min-h-screen">
+    <header class="border-b border-[#e4e9e2] bg-white/90">
+      <div class="mx-auto flex max-w-[1440px] flex-wrap items-center gap-4 px-5 py-4 sm:px-8 lg:px-12">
+        <a class="focus-ring mr-auto flex items-center gap-3 rounded-md" href="#top" aria-label="Campus Circle home">
+          <span class="grid h-10 w-10 place-items-center rounded-xl bg-[#286347] text-white"><i data-lucide="circle-dot" class="icon"></i></span>
+          <span class="leading-tight"><span class="display block text-[17px] font-bold tracking-tight">campus<span class="text-[#3d805b]">circle</span></span><span class="mt-0.5 block text-[10px] font-bold uppercase tracking-[.16em] text-[#778078]">Lost &amp; found</span></span>
+        </a>
+        <label class="relative order-3 w-full sm:order-none sm:w-auto sm:flex-1 sm:max-w-[460px]">
+          <i data-lucide="search" class="icon absolute left-4 top-1/2 -translate-y-1/2 text-[#778078]"></i>
+          <input id="search-input" type="search" placeholder="Search items, details, places..." aria-label="Search listings" class="focus-ring h-11 w-full rounded-xl border border-[#e4e9e2] bg-[#f8faf7] pl-11 pr-4 text-sm outline-none transition focus:border-[#81aa8a] focus:bg-white">
+        </label>
+        <button id="open-report" class="focus-ring inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#286347] px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#204f39] sm:px-5">
+          <i data-lucide="plus" class="icon"></i><span>Report an item</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top" class="mx-auto max-w-[1440px] px-5 pb-16 pt-8 sm:px-8 lg:px-12 lg:pt-11">
+      <section class="relative mb-9 overflow-hidden rounded-[22px] bg-[#244d38] px-6 py-7 text-white sm:px-9 sm:py-9">
+        <div class="pointer-events-none absolute -right-10 -top-20 h-64 w-64 rounded-full border border-white/10"></div>
+        <div class="pointer-events-none absolute -right-1 top-1 h-44 w-44 rounded-full border border-white/10"></div>
+        <div class="relative z-10 max-w-2xl">
+          <div class="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[.16em] text-[#c9e0cd]"><span class="h-2 w-2 rounded-full bg-[#f2c86d]"></span> Your campus, looking out for you</div>
+          <h1 class="display text-3xl font-semibold leading-tight tracking-tight sm:text-[42px]">Lost something?<br class="sm:hidden"> Found something?</h1>
+          <p class="mt-3 max-w-lg text-sm leading-6 text-white/75 sm:text-base">Good things find their way back. Check the board or post an item to help a fellow student out.</p>
+        </div>
+        <div class="relative z-10 mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-white/80">
+          <span class="inline-flex items-center gap-2"><i data-lucide="map-pin" class="icon h-4 w-4 text-[#f2c86d]"></i>Across campus</span>
+          <span class="inline-flex items-center gap-2"><i data-lucide="heart-handshake" class="icon h-4 w-4 text-[#f2c86d]"></i>Student powered</span>
+        </div>
+      </section>
+
+      <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div><div class="mb-1 text-xs font-bold uppercase tracking-[.16em] text-[#778078]">The community board</div><h2 class="display text-2xl font-semibold tracking-tight sm:text-[28px]">Recently posted</h2></div>
+        <label class="flex items-center gap-2 text-xs font-semibold text-[#778078]">Sort by
+          <select id="sort-select" aria-label="Sort listings by date" class="focus-ring h-10 rounded-lg border border-[#e4e9e2] bg-white px-3 text-sm font-semibold text-[#202921] outline-none">
+            <option value="newest">Newest first</option><option value="oldest">Oldest first</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="grid items-start gap-7 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-9">
+        <aside aria-label="Listing filters" class="rounded-2xl border border-[#e4e9e2] bg-white p-5">
+          <div class="mb-5 flex items-center justify-between"><h3 class="display text-base font-semibold">Filters</h3><button id="clear-filters" class="focus-ring rounded text-xs font-semibold text-[#3d805b] hover:text-[#204f39]">Clear all</button></div>
+          <fieldset class="mb-6">
+            <legend class="mb-2.5 text-xs font-bold uppercase tracking-[.1em] text-[#778078]">Status</legend>
+            <div class="grid grid-cols-3 gap-1 rounded-xl bg-[#f5f7f3] p-1" id="status-filters">
+              <button type="button" data-status="all" aria-pressed="true" class="status-button rounded-lg bg-white px-2 py-2 text-xs font-semibold text-[#202921] shadow-sm">All</button>
+              <button type="button" data-status="Lost" aria-pressed="false" class="status-button rounded-lg px-2 py-2 text-xs font-semibold text-[#778078] transition hover:text-[#202921]">Lost</button>
+              <button type="button" data-status="Found" aria-pressed="false" class="status-button rounded-lg px-2 py-2 text-xs font-semibold text-[#778078] transition hover:text-[#202921]">Found</button>
+            </div>
+          </fieldset>
+          <label class="mb-5 block"><span class="mb-2.5 block text-xs font-bold uppercase tracking-[.1em] text-[#778078]">Category</span>
+            <select id="category-filter" class="focus-ring h-11 w-full rounded-lg border border-[#e4e9e2] bg-white px-3 text-sm outline-none"><option value="all">All categories</option><option>Electronics</option><option>Keys</option><option>IDs</option><option>Bags</option><option>Others</option></select>
+          </label>
+          <label class="block"><span class="mb-2.5 block text-xs font-bold uppercase tracking-[.1em] text-[#778078]">Campus location</span>
+            <select id="location-filter" class="focus-ring h-11 w-full rounded-lg border border-[#e4e9e2] bg-white px-3 text-sm outline-none"><option value="all">All locations</option><option>Library</option><option>Gym</option><option>Cafeteria</option><option>Science Block</option><option>Dorms</option></select>
+          </label>
+          <div class="mt-6 border-t border-[#e4e9e2] pt-4 text-xs leading-5 text-[#778078]">Found an item? Leave it with campus security and post it here so its owner can find it.</div>
+        </aside>
+
+        <section aria-label="Lost and found listings" class="min-w-0">
+          <div class="mb-4 flex items-center justify-between"><p id="result-count" aria-live="polite" class="text-sm text-[#778078]"></p><span class="inline-flex items-center gap-1.5 text-xs font-medium text-[#778078]"><i data-lucide="clock-3" class="icon h-4 w-4"></i>Updated just now</span></div>
+          <div id="listing-grid" class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"></div>
+          <div id="empty-state" class="hidden rounded-2xl border border-dashed border-[#cfd8ce] bg-white px-6 py-14 text-center">
+            <span class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#eaf2eb] text-[#286347]"><i data-lucide="search-x" class="icon h-5 w-5"></i></span>
+            <h3 class="display mt-4 text-lg font-semibold">No matching items</h3><p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-[#778078]">Try a different search or loosen your filters. The item you're looking for may be posted soon.</p>
+            <button id="empty-clear" class="focus-ring mt-4 rounded-lg px-3 py-2 text-sm font-semibold text-[#286347] hover:bg-[#f2f7f2]">Clear filters</button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="report-modal" class="fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto bg-[#17251d]/55 p-4 backdrop-blur-[3px]" aria-hidden="true">
+    <section role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" class="my-auto w-full max-w-[590px] rounded-2xl bg-white shadow-2xl">
+      <div class="flex items-start justify-between border-b border-[#e4e9e2] px-6 py-5 sm:px-7">
+        <div><div class="mb-1 text-xs font-bold uppercase tracking-[.14em] text-[#3d805b]">Help the community</div><h2 id="modal-title" class="display text-xl font-semibold">Report an item</h2><p id="modal-description" class="mt-1 text-sm text-[#778078]">Share a few details so the right person can find it.</p></div>
+        <button id="close-report" type="button" aria-label="Close report form" class="focus-ring grid h-9 w-9 place-items-center rounded-lg text-[#778078] transition hover:bg-[#f5f7f3] hover:text-[#202921]"><i data-lucide="x" class="icon"></i></button>
+      </div>
+      <form id="report-form" class="grid gap-x-4 gap-y-4 px-6 py-5 sm:grid-cols-2 sm:px-7">
+        <label class="sm:col-span-2"><span class="mb-1.5 block text-xs font-semibold">Item name <span class="text-[#bd554c]">*</span></span><input name="title" required maxlength="70" placeholder="e.g. Blue Hydro Flask" class="focus-ring h-11 w-full rounded-lg border border-[#dfe5dd] px-3 text-sm outline-none focus:border-[#81aa8a]"></label>
+        <label><span class="mb-1.5 block text-xs font-semibold">Category <span class="text-[#bd554c]">*</span></span><select name="category" required class="focus-ring h-11 w-full rounded-lg border border-[#dfe5dd] bg-white px-3 text-sm outline-none focus:border-[#81aa8a]"><option value="" disabled selected>Select category</option><option>Electronics</option><option>Keys</option><option>IDs</option><option>Bags</option><option>Others</option></select></label>
+        <label><span class="mb-1.5 block text-xs font-semibold">Status <span class="text-[#bd554c]">*</span></span><select name="status" required class="focus-ring h-11 w-full rounded-lg border border-[#dfe5dd] bg-white px-3 text-sm outline-none focus:border-[#81aa8a]"><option value="Lost">Lost</option><option value="Found">Found</option></select></label>
+        <label><span class="mb-1.5 block text-xs font-semibold">Campus location <span class="text-[#bd554c]">*</span></span><select name="location" required class="focus-ring h-11 w-full rounded-lg border border-[#dfe5dd] bg-white px-3 text-sm outline-none focus:border-[#81aa8a]"><option value="" disabled selected>Select location</option><option>Library</option><option>Gym</option><option>Cafeteria</option><option>Science Block</option><option>Dorms</option></select></label>
+        <label><span class="mb-1.5 block text-xs font-semibold">Date <span class="text-[#bd554c]">*</span></span><input name="date" type="date" required class="focus-ring h-11 w-full rounded-lg border border-[#dfe5dd] bg-white px-3 text-sm outline-none focus:border-[#81aa8a]"></label>
+        <label class="sm:col-span-2"><span class="mb-1.5 block text-xs font-semibold">Description</span><textarea name="description" rows="3" maxlength="400" placeholder="Color, brand, where you last saw it..." class="focus-ring w-full resize-y rounded-lg border border-[#dfe5dd] px-3 py-2.5 text-sm outline-none focus:border-[#81aa8a]"></textarea></label>
+        <div class="sm:col-span-2"><label for="item-image" class="mb-1.5 block text-xs font-semibold">Add a photo <span class="font-normal text-[#778078]">(optional)</span></label><input id="item-image" name="image" type="file" accept="image/*" class="focus-ring w-full rounded-lg border border-dashed border-[#cfd8ce] bg-[#f8faf7] px-3 py-2 text-xs text-[#59625b]"><p class="mt-1 text-[11px] text-[#778078]">A clear phone photo helps identify the item. Images are resized before saving.</p><div id="image-preview-wrap" class="mt-3 hidden"><img id="image-preview" alt="Selected item preview" class="h-32 w-40 rounded-xl border border-[#e4e9e2] object-cover"><button id="remove-image" type="button" class="focus-ring mt-1 block rounded px-1 py-1 text-xs font-semibold text-[#a3473f]">Remove photo</button></div></div>
+        <label class="sm:col-span-2"><span class="mb-1.5 block text-xs font-semibold">Contact info <span class="text-[#bd554c]">*</span></span><input name="contact" type="text" required maxlength="100" placeholder="Email or campus handle" class="focus-ring h-11 w-full rounded-lg border border-[#dfe5dd] px-3 text-sm outline-none focus:border-[#81aa8a]"><span class="mt-1 block text-[11px] text-[#778078]">Visible to other students on this board.</span></label>
+        <div class="mt-1 flex justify-end gap-2 border-t border-[#e4e9e2] pt-4 sm:col-span-2">
+          <button id="cancel-report" type="button" class="focus-ring h-10 rounded-lg px-4 text-sm font-semibold text-[#59625b] transition hover:bg-[#f5f7f3]">Cancel</button>
+          <button type="submit" class="focus-ring inline-flex h-10 items-center gap-2 rounded-lg bg-[#286347] px-4 text-sm font-semibold text-white transition hover:bg-[#204f39]"><i data-lucide="send" class="icon h-4 w-4"></i>Post to board</button>
+        </div>
+      </form>
+    </section>
+  </div>
+  <div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-[60] hidden -translate-x-1/2 items-center gap-2 rounded-xl bg-[#202921] px-4 py-3 text-sm font-medium text-white shadow-xl"><i data-lucide="check-circle-2" class="icon h-4 w-4 text-[#a7d6b1]"></i><span>Item posted to the board</span></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

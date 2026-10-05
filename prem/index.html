@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f2">
+  <meta name="description" content="A student-powered campus exchange for useful finds, move-out essentials, and things worth giving a second life.">
+  <title>Second Semester | Campus Exchange</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#17241d',
+            forest: '#176b49',
+            leaf: '#d5f06f',
+            paper: '#f5f7f2',
+            muted: '#68746c'
+          },
+          fontFamily: {
+            display: ['DM Sans', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif']
+          },
+          boxShadow: {
+            soft: '0 14px 40px rgba(24, 45, 32, .07)'
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; }
+    button, input, select, textarea { font: inherit; }
+    .tab-indicator { transition: transform .28s cubic-bezier(.2,.8,.2,1), width .28s ease; }
+    .view-enter { animation: view-in .32s ease both; }
+    .card-enter { animation: card-in .38s cubic-bezier(.2,.75,.25,1) both; }
+    .modal-panel { animation: modal-in .2s ease both; }
+    .list-label-short { display: none; }
+    @keyframes view-in { from { opacity: .2; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes card-in { from { opacity: 0; transform: translateY(12px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes modal-in { from { opacity: 0; transform: translateY(8px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    dialog::backdrop { background: rgba(17, 31, 23, .48); backdrop-filter: blur(4px); }
+    dialog[open] { animation: modal-in .2s ease both; }
+    .item-photo { background-color: #e8eee5; background-position: center; background-size: cover; }
+    .item-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19,32,23,.02), rgba(19,32,23,.08)); pointer-events: none; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+    @media (max-width: 400px) {
+      .list-label-full { display: none; }
+      .list-label-short { display: inline; }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-paper text-ink antialiased">
+  <div class="min-h-screen">
+    <header class="border-b border-[#e5eae2] bg-white">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-4 sm:px-8 lg:px-10">
+        <a href="#main" class="flex min-w-0 items-center gap-3" aria-label="Second Semester home">
+          <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-forest text-leaf">
+            <i data-lucide="recycle" class="size-5" aria-hidden="true"></i>
+          </span>
+          <span class="min-w-0">
+            <span class="block text-[15px] font-extrabold leading-tight tracking-tight">second semester</span>
+            <span class="block text-[11px] font-medium text-muted">CAMPUS EXCHANGE</span>
+          </span>
+        </a>
+        <div class="hidden items-center gap-2 rounded-full border border-[#e5eae2] bg-paper px-4 py-2.5 sm:flex">
+          <span class="grid size-7 place-items-center rounded-full bg-leaf text-forest"><i data-lucide="sprout" class="size-4" aria-hidden="true"></i></span>
+          <p class="text-xs font-semibold text-muted"><span class="text-ink">Impact so far</span><span class="mx-1.5 text-[#c4cdc4]">/</span><span id="impact-count">0</span> items given a second life</p>
+        </div>
+        <button id="open-listing" type="button" aria-label="List an item" class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-forest px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#12583c] focus:outline-none focus:ring-4 focus:ring-forest/20">
+          <i data-lucide="plus" class="size-4" aria-hidden="true"></i><span class="list-label-full">List an item</span><span class="list-label-short">List</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main" class="mx-auto max-w-7xl px-5 pb-16 pt-9 sm:px-8 sm:pt-12 lg:px-10">
+      <section class="mb-9 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div class="max-w-2xl">
+          <p class="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase text-forest"><span class="size-1.5 rounded-full bg-[#77aa41]"></span> Your campus, in circulation</p>
+          <h1 class="text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl">Good stuff deserves<br class="hidden sm:block"> another semester.</h1>
+          <p class="mt-4 max-w-xl text-sm leading-6 text-muted sm:text-base">Pass along what you no longer need. Find what your room is missing. All just a few steps across campus.</p>
+        </div>
+        <div class="flex items-center gap-3 rounded-xl border border-[#e4e9e1] bg-white px-4 py-3 sm:hidden">
+          <span class="grid size-9 place-items-center rounded-full bg-[#f0f7dc] text-forest"><i data-lucide="sprout" class="size-4" aria-hidden="true"></i></span>
+          <p class="text-xs font-semibold text-muted"><span class="text-ink">Campus impact</span><br><span id="impact-count-mobile">0</span> items given a second life</p>
+        </div>
+        <div class="flex flex-col gap-3 sm:flex-row lg:pb-1">
+          <label class="relative block min-w-0 sm:w-64">
+            <i data-lucide="search" class="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#859087]" aria-hidden="true"></i>
+            <input id="search-input" type="search" placeholder="Search the exchange" class="h-11 w-full rounded-lg border border-[#dfe6dd] bg-white pl-10 pr-3 text-sm outline-none transition placeholder:text-[#929b93] focus:border-forest focus:ring-3 focus:ring-forest/10" aria-label="Search listings">
+          </label>
+          <label class="sr-only" for="category-filter">Filter by category</label>
+          <select id="category-filter" class="h-11 rounded-lg border border-[#dfe6dd] bg-white px-3 text-sm text-ink outline-none focus:border-forest focus:ring-3 focus:ring-forest/10">
+            <option value="all">All categories</option>
+            <option>Electronics</option><option>Furniture</option><option>Books</option><option>Kitchen</option><option>Decor</option><option>Other</option>
+          </select>
+        </div>
+      </section>
+
+      <section aria-label="Marketplace listings">
+        <div class="mb-6 flex flex-col justify-between gap-4 border-b border-[#dfe5dc] sm:flex-row sm:items-end">
+          <div class="relative flex w-full max-w-md" role="tablist" aria-label="Listing type">
+            <span id="tab-indicator" class="tab-indicator absolute bottom-0 left-0 h-[2px] bg-forest" aria-hidden="true"></span>
+            <button type="button" role="tab" id="tab-available" aria-controls="listing-grid" aria-selected="true" data-tab="available" class="tab-button relative z-10 min-h-12 flex-1 px-3 text-sm font-bold text-forest transition-colors">Available <span class="ml-1 text-xs font-semibold text-[#849087]" id="available-count">0</span></button>
+            <button type="button" role="tab" id="tab-claimed" aria-controls="listing-grid" aria-selected="false" data-tab="claimed" class="tab-button relative z-10 min-h-12 flex-1 px-3 text-sm font-semibold text-muted transition-colors">Claimed <span class="ml-1 text-xs font-semibold text-[#849087]" id="claimed-count">0</span></button>
+            <button type="button" role="tab" id="tab-wishlist" aria-controls="listing-grid" aria-selected="false" data-tab="wishlist" class="tab-button relative z-10 min-h-12 flex-1 px-3 text-sm font-semibold text-muted transition-colors">Wishlist <span class="ml-1 text-xs font-semibold text-[#849087]" id="wishlist-count">0</span></button>
+          </div>
+          <p class="pb-3 text-xs font-medium text-muted"><span id="results-count">0</span> listings <span class="mx-1 text-[#c4cdc4]">·</span> Student-to-student, always</p>
+        </div>
+        <div id="listing-grid" role="tabpanel" aria-labelledby="tab-available" class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-live="polite"></div>
+      </section>
+      <footer class="mt-14 flex flex-col justify-between gap-2 border-t border-[#dfe5dc] pt-5 text-xs font-medium text-muted sm:flex-row sm:items-center">
+        <p>Made for campus life, built for a little less waste.</p><p>Give it another go <span class="mx-1 text-forest">↗</span></p>
+      </footer>
+    </main>
+  </div>
+
+  <dialog id="listing-dialog" class="w-[min(100%-2rem,520px)] rounded-2xl border-0 bg-white p-0 text-ink shadow-2xl backdrop:bg-ink/40">
+    <form id="listing-form" class="max-h-[90vh] overflow-y-auto p-6 sm:p-8">
+      <div class="mb-6 flex items-start justify-between gap-4">
+        <div><p class="mb-1 text-xs font-bold uppercase text-forest">Keep it in circulation</p><h2 class="text-2xl font-extrabold tracking-tight">List an item</h2><p class="mt-1 text-sm text-muted">Someone nearby might be looking for exactly this.</p></div>
+        <button id="close-dialog" type="button" aria-label="Close form" class="grid size-9 shrink-0 place-items-center rounded-lg text-muted transition hover:bg-paper hover:text-ink focus:outline-none focus:ring-2 focus:ring-forest"><i data-lucide="x" class="size-5" aria-hidden="true"></i></button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label for="item-title" class="mb-1.5 block text-sm font-bold">Item title</label>
+          <input id="item-title" name="title" required maxlength="70" placeholder="e.g. Desk lamp, barely used" class="w-full rounded-lg border border-[#dfe6dd] px-3.5 py-3 text-sm outline-none placeholder:text-[#929b93] focus:border-forest focus:ring-3 focus:ring-forest/10">
+        </div>
+        <div>
+          <label for="seller-contact" class="mb-1.5 block text-sm font-bold">Seller contact</label>
+          <input id="seller-contact" name="contact" type="text" required minlength="5" maxlength="100" placeholder="Email or phone number" class="w-full rounded-lg border border-[#dfe6dd] px-3.5 py-3 text-sm outline-none placeholder:text-[#929b93] focus:border-forest focus:ring-3 focus:ring-forest/10">
+        </div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label for="item-price" class="mb-1.5 block text-sm font-bold">Price <span class="font-medium text-muted">(INR)</span></label>
+            <div class="relative"><span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-muted">₹</span><input id="item-price" name="price" type="number" min="1" step="1" value="1" class="w-full rounded-lg border border-[#dfe6dd] py-3 pl-8 pr-3 text-sm outline-none focus:border-forest focus:ring-3 focus:ring-forest/10"></div>
+            <label class="mt-2 inline-flex cursor-pointer items-center gap-2 text-xs font-semibold text-muted"><input id="item-free" type="checkbox" disabled class="size-4 rounded accent-forest"> Free (Books only)</label>
+          </div>
+          <div>
+            <label for="item-category" class="mb-1.5 block text-sm font-bold">Category</label>
+            <select id="item-category" name="category" class="w-full rounded-lg border border-[#dfe6dd] bg-white px-3 py-3 text-sm outline-none focus:border-forest focus:ring-3 focus:ring-forest/10"><option>Electronics</option><option>Furniture</option><option>Books</option><option>Kitchen</option><option>Decor</option><option>Other</option></select>
+          </div>
+        </div>
+        <fieldset>
+          <legend class="mb-2 block text-sm font-bold">Post to</legend>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="cursor-pointer"><input type="radio" name="designation" value="available" checked class="peer sr-only"><span class="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#dfe6dd] text-sm font-semibold text-muted transition peer-checked:border-forest peer-checked:bg-[#f0f7e9] peer-checked:text-forest"><i data-lucide="tag" class="size-4" aria-hidden="true"></i>Available</span></label>
+            <label class="cursor-pointer"><input type="radio" name="designation" value="wishlist" class="peer sr-only"><span class="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#dfe6dd] text-sm font-semibold text-muted transition peer-checked:border-forest peer-checked:bg-[#f0f7e9] peer-checked:text-forest"><i data-lucide="heart" class="size-4" aria-hidden="true"></i>Wishlist</span></label>
+          </div>
+        </fieldset>
+        <div>
+          <label for="item-description" class="mb-1.5 block text-sm font-bold">Description</label>
+          <textarea id="item-description" name="description" required maxlength="240" rows="3" placeholder="Share the details a neighbor would want to know..." class="w-full resize-y rounded-lg border border-[#dfe6dd] px-3.5 py-3 text-sm outline-none placeholder:text-[#929b93] focus:border-forest focus:ring-3 focus:ring-forest/10"></textarea>
+        </div>
+        <div>
+          <label for="item-image" class="mb-1.5 block text-sm font-bold">Add image <span class="font-medium text-muted">(optional)</span></label>
+          <input id="item-image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif" class="block w-full cursor-pointer rounded-lg border border-[#dfe6dd] bg-white text-sm text-muted file:mr-3 file:border-0 file:bg-[#f0f7e9] file:px-4 file:py-3 file:font-bold file:text-forest hover:file:bg-[#e8f2d7]">
+          <p id="image-error" class="mt-1.5 hidden text-xs font-semibold text-red-700" role="alert"></p>
+        </div>
+      </div>
+      <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <button id="cancel-listing" type="button" class="rounded-lg px-4 py-3 text-sm font-bold text-muted transition hover:bg-paper">Cancel</button>
+        <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-lg bg-forest px-5 py-3 text-sm font-bold text-white transition hover:bg-[#12583c] focus:outline-none focus:ring-4 focus:ring-forest/20"><i data-lucide="arrow-up-right" class="size-4" aria-hidden="true"></i>Publish listing</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    'use strict';
+
+    const STORAGE_KEY = 'second-semester-marketplace-v1';
+    // Seed only a first visit; all listing types share this persisted collection.
+    const SEED_ITEMS = [
+      { id: 'seed-fridge', title: 'Mini-fridge, working condition', price: 3500, category: 'Electronics', description: 'Kept cold all year and ready for a new room. Pickup near North Hall.', contact: 'fridge.seller@campus.edu', status: 'available', photo: 'photo-1571175443880-49e1d25b2bc5' },
+      { id: 'seed-calculus', title: 'Calculus Textbook', price: 0, category: 'Books', description: 'A few notes in the margins, otherwise in great shape. Includes the access-code booklet.', contact: 'books.seller@campus.edu', status: 'available', photo: 'photo-1544947950-fa07a98d237f' },
+      { id: 'seed-microwave', title: 'Compact microwave', price: 2000, category: 'Kitchen', description: 'Small footprint, clean inside, and still heats evenly. Moving out this weekend.', contact: 'kitchen.seller@campus.edu', status: 'available', photo: 'photo-1585659722983-3a675dabf23d' },
+      { id: 'seed-lamp', title: 'Adjustable desk lamp', price: 300, category: 'Decor', description: 'Warm LED bulb included. The arm adjusts easily for late-night study sessions.', contact: 'decor.seller@campus.edu', status: 'available', photo: 'photo-1507473885765-e6ed057f782c' },
+      { id: 'seed-chair', title: 'Rolling desk chair', price: 700, category: 'Furniture', description: 'Comfortable, height-adjustable chair with a couple of small scuffs. No squeaks.', contact: 'furniture.seller@campus.edu', status: 'available', photo: 'photo-1505843490538-5133c6c7d0e1' }
+    ];
+
+    const CATEGORY_ICONS = { Electronics: 'plug-zap', Furniture: 'armchair', Books: 'book-open', Kitchen: 'cooking-pot', Decor: 'lamp', Other: 'package' };
+    const PHOTO_TINTS = { Electronics: '#dce8df', Furniture: '#e8e6d9', Books: '#eee6d7', Kitchen: '#e6ebd9', Decor: '#e9e2d8', Other: '#e3e9e6' };
+    const PHOTO_IDS = {
+      'seed-fridge': 'photo-1571175443880-49e1d25b2bc5',
+      'seed-calculus': 'photo-1544947950-fa07a98d237f',
+      'seed-microwave': 'photo-1585659722983-3a675dabf23d',
+      'seed-lamp': 'photo-1507473885765-e6ed057f782c',
+      'seed-chair': 'photo-1505843490538-5133c6c7d0e1'
+    };
+    const grid = document.querySelector('#listing-grid');
+    const dialog = document.querySelector('#listing-dialog');
+    const form = document.querySelector('#listing-form');
+    const searchInput = document.querySelector('#search-input');
+    const categoryFilter = document.querySelector('#category-filter');
+    const tabs = [...document.querySelectorAll('.tab-button')];
+    let activeTab = 'available';
+    let items = loadItems();
+
+    function loadItems() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (Array.isArray(saved)) {
+          const seedsById = new Map(SEED_ITEMS.map((item) => [item.id, item]));
+          return saved.map((item) => {
+            const updatedSeed = seedsById.get(item.id);
+            if (updatedSeed) return { ...item, ...updatedSeed, status: item.status };
+            const price = Number(item.price) || 0;
+            return { ...item, price: item.category === 'Books' ? Math.max(0, price) : Math.max(1, price) };
+          });
+        }
+      } catch (error) {
+        console.warn('Could not read saved marketplace listings.', error);
+      }
+      return structuredClone(SEED_ITEMS);
+    }
+
+    function saveItems() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      } catch (error) {
+        console.warn('Could not save marketplace listings.', error);
+      }
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+    }
+
+    function priceLabel(price) {
+      return Number(price) === 0 ? 'FREE' : new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(price));
+    }
+
+    // Counts and cards are derived from the current collection and active filters.
+    function updateCounts() {
+      const counts = {
+        available: items.filter((item) => item.status === 'available').length,
+        claimed: items.filter((item) => item.status === 'claimed').length,
+        wishlist: items.filter((item) => item.status === 'wishlist').length
+      };
+      document.querySelector('#available-count').textContent = counts.available;
+      document.querySelector('#claimed-count').textContent = counts.claimed;
+      document.querySelector('#wishlist-count').textContent = counts.wishlist;
+      const impact = counts.claimed;
+      document.querySelector('#impact-count').textContent = impact;
+      document.querySelector('#impact-count-mobile').textContent = impact;
+    }
+
+    function render() {
+      const query = searchInput.value.trim().toLowerCase();
+      const category = categoryFilter.value;
+      const visibleItems = items.filter((item) => item.status === activeTab)
+        .filter((item) => category === 'all' || item.category === category)
+        .filter((item) => `${item.title} ${item.description} ${item.category}`.toLowerCase().includes(query));
+
+      updateCounts();
+      document.querySelector('#results-count').textContent = visibleItems.length;
+      grid.setAttribute('aria-labelledby', `tab-${activeTab}`);
+      grid.classList.remove('view-enter');
+      void grid.offsetWidth;
+      grid.classList.add('view-enter');
+
+      if (!visibleItems.length) {
+        const hasAnyForTab = items.some((item) => item.status === activeTab);
+        const title = hasAnyForTab ? 'No matches this time' : activeTab === 'claimed' ? 'A clean slate' : activeTab === 'wishlist' ? 'Nothing on the list yet' : 'Room for something useful';
+        const description = hasAnyForTab ? 'Try a different search or category.' : activeTab === 'claimed' ? 'Claimed finds will show up here.' : activeTab === 'wishlist' ? 'Post what you are hoping to find on campus.' : 'No listings are available right now. Be the first to pass something along.';
+        grid.innerHTML = `<div class="col-span-full flex min-h-64 flex-col items-center justify-center px-5 py-12 text-center"><span class="mb-4 grid size-12 place-items-center rounded-2xl bg-[#eaf1e4] text-forest"><i data-lucide="${activeTab === 'wishlist' ? 'heart' : 'leaf'}" class="size-5" aria-hidden="true"></i></span><h3 class="text-lg font-extrabold">${title}</h3><p class="mt-1 max-w-sm text-sm text-muted">${description}</p></div>`;
+        refreshIcons();
+        return;
+      }
+
+      grid.innerHTML = visibleItems.map((item, index) => cardMarkup(item, index)).join('');
+      refreshIcons();
+    }
+
+    function cardMarkup(item, index) {
+      const category = escapeHTML(item.category);
+      const title = escapeHTML(item.title);
+      const description = escapeHTML(item.description);
+      const contact = escapeHTML(item.contact || 'seller@campus.edu');
+      const photoId = PHOTO_IDS[item.id] || '';
+      const uploadedImage = typeof item.image === 'string' && /^data:image\/jpeg;base64,[a-z0-9+/]+=*$/i.test(item.image) ? item.image : '';
+      const imageStyle = uploadedImage
+        ? `background-image:linear-gradient(180deg,rgba(20,40,27,.02),rgba(20,40,27,.08)),url(${uploadedImage});background-color:${PHOTO_TINTS[item.category] || PHOTO_TINTS.Other}`
+        : photoId
+        ? `background-image:linear-gradient(180deg,rgba(20,40,27,.02),rgba(20,40,27,.08)),url(https://images.unsplash.com/${photoId}?auto=format&fit=crop&w=900&q=80);background-color:${PHOTO_TINTS[item.category] || PHOTO_TINTS.Other}`
+        : `background-color:${PHOTO_TINTS[item.category] || PHOTO_TINTS.Other}`;
+      const image = `<div class="item-photo relative h-48 overflow-hidden" role="img" aria-label="${title}" style="${imageStyle}">${!photoId ? `<span class="absolute inset-0 grid place-items-center text-forest/70"><i data-lucide="${CATEGORY_ICONS[item.category] || CATEGORY_ICONS.Other}" class="size-12" aria-hidden="true"></i></span>` : ''}<span class="absolute left-3 top-3 z-10 rounded-md bg-white/95 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-forest">${category}</span>${item.status === 'claimed' ? '<span class="absolute right-3 top-3 z-10 rounded-md bg-ink/80 px-2.5 py-1 text-[10px] font-extrabold uppercase text-white">Claimed</span>' : ''}</div>`;
+      let action;
+      if (item.status === 'available') {
+        action = `<button type="button" data-action="claim" data-id="${escapeHTML(item.id)}" class="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-lg bg-forest px-3 text-sm font-bold text-white transition hover:bg-[#12583c] focus:outline-none focus:ring-4 focus:ring-forest/20"><i data-lucide="hand" class="size-4" aria-hidden="true"></i>Claim item</button>`;
+      } else if (item.status === 'claimed') {
+        action = `<button type="button" data-action="relist" data-id="${escapeHTML(item.id)}" class="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-lg border border-[#dfe6dd] px-3 text-sm font-bold text-ink transition hover:bg-paper focus:outline-none focus:ring-2 focus:ring-forest"><i data-lucide="rotate-ccw" class="size-4" aria-hidden="true"></i>Make available</button>`;
+      } else {
+        action = `<span class="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-lg bg-[#f0f7e9] px-3 text-sm font-bold text-forest"><i data-lucide="heart" class="size-4" aria-hidden="true"></i>Looking for this</span>`;
+      }
+      const price = item.status === 'wishlist' ? 'WANTED' : priceLabel(item.price);
+      return `<article class="card-enter overflow-hidden rounded-xl border border-[#e4e9e1] bg-white shadow-soft transition duration-200 hover:-translate-y-0.5 hover:shadow-lg" style="animation-delay:${Math.min(index * 45, 180)}ms">${image}<div class="p-4"><div class="mb-2 flex items-start justify-between gap-3"><h3 class="min-h-[2.75rem] text-base font-extrabold leading-snug">${title}</h3><span class="shrink-0 rounded-md ${price === 'FREE' ? 'bg-[#eef6dd] text-[#416d25]' : price === 'WANTED' ? 'bg-[#f1f3ef] text-muted' : 'bg-[#f1f3ef] text-ink'} px-2 py-1 text-xs font-extrabold">${price}</span></div><p class="mb-3 min-h-[3rem] text-sm leading-5 text-muted">${description}</p><p class="mb-4 flex items-center gap-2 break-all text-xs font-semibold text-forest"><i data-lucide="contact" class="size-4 shrink-0" aria-hidden="true"></i><span>Seller: ${contact}</span></p><div class="flex items-center gap-2 border-t border-[#edf0eb] pt-3">${action}</div></div></article>`;
+    }
+
+    function refreshIcons() {
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function setActiveTab(tab) {
+      activeTab = tab;
+      tabs.forEach((button) => {
+        const selected = button.dataset.tab === tab;
+        button.setAttribute('aria-selected', String(selected));
+        button.classList.toggle('text-forest', selected);
+        button.classList.toggle('font-bold', selected);
+        button.classList.toggle('text-muted', !selected);
+        button.classList.toggle('font-semibold', !selected);
+      });
+      const selectedTab = tabs.find((button) => button.dataset.tab === tab);
+      const indicator = document.querySelector('#tab-indicator');
+      indicator.style.width = `${selectedTab.offsetWidth}px`;
+      indicator.style.transform = `translateX(${selectedTab.offsetLeft}px)`;
+      render();
+    }
+
+    tabs.forEach((button, index) => {
+      button.addEventListener('click', () => setActiveTab(button.dataset.tab));
+      button.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+        tabs[next].focus();
+        setActiveTab(tabs[next].dataset.tab);
+      });
+    });
+
+    grid.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-action]');
+      if (!button) return;
+      const item = items.find((listing) => listing.id === button.dataset.id);
+      if (!item) return;
+      item.status = button.dataset.action === 'claim' ? 'claimed' : 'available';
+      saveItems();
+      render();
+    });
+
+    searchInput.addEventListener('input', render);
+    categoryFilter.addEventListener('change', render);
+    document.querySelector('#open-listing').addEventListener('click', () => dialog.showModal());
+    document.querySelector('#close-dialog').addEventListener('click', () => dialog.close());
+    document.querySelector('#cancel-listing').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    const priceInput = document.querySelector('#item-price');
+    const freeCheckbox = document.querySelector('#item-free');
+    const categoryInput = document.querySelector('#item-category');
+    function syncPriceControls() {
+      const isBook = categoryInput.value === 'Books';
+      freeCheckbox.disabled = !isBook;
+      if (!isBook) freeCheckbox.checked = false;
+      priceInput.disabled = freeCheckbox.checked;
+      if (!freeCheckbox.checked && Number(priceInput.value) < 1) priceInput.value = '1';
+    }
+    categoryInput.addEventListener('change', syncPriceControls);
+    syncPriceControls();
+    freeCheckbox.addEventListener('change', () => {
+      priceInput.disabled = freeCheckbox.checked;
+      if (freeCheckbox.checked) priceInput.value = '0';
+      else priceInput.value = '1';
+    });
+    priceInput.addEventListener('input', () => {
+      if (Number(priceInput.value) > 0) freeCheckbox.checked = false;
+    });
+
+    const imageInput = document.querySelector('#item-image');
+    const imageError = document.querySelector('#image-error');
+    const supportedImageTypes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+    imageInput.addEventListener('change', () => {
+      imageError.textContent = '';
+      imageError.classList.add('hidden');
+      if (imageInput.files[0] && !supportedImageTypes.has(imageInput.files[0].type)) {
+        imageInput.setCustomValidity('Choose a JPG, PNG, WEBP, or GIF image.');
+        imageError.textContent = 'Choose a JPG, PNG, WEBP, or GIF image.';
+        imageError.classList.remove('hidden');
+      } else {
+        imageInput.setCustomValidity('');
+      }
+    });
+
+    async function compressImage(file) {
+      const bitmap = await createImageBitmap(file);
+      const scale = Math.min(1, 1000 / Math.max(bitmap.width, bitmap.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(bitmap.width * scale);
+      canvas.height = Math.round(bitmap.height * scale);
+      canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      bitmap.close();
+      return canvas.toDataURL('image/jpeg', 0.82);
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      imageError.textContent = '';
+      imageError.classList.add('hidden');
+      const data = new FormData(form);
+      const category = String(data.get('category'));
+      const isFreeBook = category === 'Books' && freeCheckbox.checked;
+      const price = isFreeBook ? 0 : Math.max(1, Math.round(Number(data.get('price')) || 1));
+      let image = '';
+      if (imageInput.files[0]) {
+        if (imageInput.files[0].size > 8 * 1024 * 1024) {
+          imageError.textContent = 'Choose an image smaller than 8 MB.';
+          imageError.classList.remove('hidden');
+          return;
+        }
+        try {
+          image = await compressImage(imageInput.files[0]);
+        } catch (error) {
+          imageError.textContent = 'That image could not be loaded. Try another file.';
+          imageError.classList.remove('hidden');
+          return;
+        }
+      }
+      const newItem = {
+        id: globalThis.crypto?.randomUUID?.() || `item-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        title: String(data.get('title')).trim(),
+        price,
+        category,
+        description: String(data.get('description')).trim(),
+        contact: String(data.get('contact')).trim(),
+        image,
+        status: String(data.get('designation'))
+      };
+      items.unshift(newItem);
+      saveItems();
+      form.reset();
+      syncPriceControls();
+      setActiveTab(newItem.status);
+      dialog.close();
+      grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    window.addEventListener('resize', () => {
+      const selectedTab = tabs.find((button) => button.dataset.tab === activeTab);
+      const indicator = document.querySelector('#tab-indicator');
+      indicator.style.width = `${selectedTab.offsetWidth}px`;
+      indicator.style.transform = `translateX(${selectedTab.offsetLeft}px)`;
+    });
+
+    setActiveTab(activeTab);
+    refreshIcons();
+  </script>
+</body>
+</html>
